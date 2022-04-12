@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  web1:
+    image: "node-app"
+    container_name: web1
+    ports:
+      - 9000-9999:8080
+    networks:
+      - mynetwork
+
+  web2:
+    image: "node-app"
+    container_name: web2
+    ports:
+      - 9000-9999:8080
+    networks:
+      - mynetwork
+
+  web3:
+    image: "node-app"
+    container_name: web3
+    ports:
+      - 9000-9999:8080
+    networks:
+      - mynetwork
+
+
+  lb:
+    depends_on:
+      - web1
+      - web2
+      - web3
+    image: "haproxytech/haproxy-alpine:2.4"
+    ports:
+      - 80:80
+    volumes:
+      - $PWD:/usr/local/etc/haproxy:ro
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
